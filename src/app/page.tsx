@@ -11,7 +11,7 @@ const TablePage = () => {
 
   // Handle cell changes
   const handleChange = (row: number, col: number, e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value ? parseFloat(e.target.value) : 0;
+    const value = e.target.value 
     dispatch(updateCell({ row, col, value }));
   };
 
@@ -47,7 +47,7 @@ const TablePage = () => {
               <input
                 className=" text-center rounded px-1 "
                 type="number"
-                value={defect[colIndex] }
+                value={defect[colIndex] === 0 ? "" : defect[colIndex]}
                 onChange={(e) =>
                   handleChange(rowIndex, colIndex, e)
                 }

@@ -15,7 +15,7 @@ const DEFECTIVE_BALANCE_QTY_ROW = 45;
 const REJECTS_QTY_ROW = 47;
 
 const initialState = {
-  cells: Array.from({ length: TOTAL_ROWS }, () => Array(TOTAL_COLS).fill(0)),
+  cells: Array.from({ length: TOTAL_ROWS }, () => Array(TOTAL_COLS).fill("")),
 };
 
 const tableSlice = createSlice({
@@ -24,7 +24,9 @@ const tableSlice = createSlice({
   reducers: {
     updateCell: (state, action) => {
       const { row, col, value } = action.payload;
-      state.cells[row][col] = parseFloat(value) || 0; // Update the specific cell
+      const parsedValue = value === "" ? 0 : parseFloat(value); 
+      // state.cells[row][col] = parseFloat(value) || 0; 
+      state.cells[row][col] = parsedValue; 
 
       // Update columns based on new values
       for (let c = 0; c < TOTAL_COLS; c++) {
