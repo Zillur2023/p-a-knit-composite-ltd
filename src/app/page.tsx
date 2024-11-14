@@ -4,16 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateCell } from '@/redux/features/table/tableSlice';
 import { RootState } from '@/redux/store';
 import { defectsName, reportTime } from '@/constant';
-// import { updateCell } from '../store/tableSlice'; 
-
 
 const TablePage = () => {
   const dispatch = useDispatch();
   const cells = useSelector((state:RootState) => state.table.cells);
 
   // Handle cell changes
-  const handleChange = (row, col, event) => {
-    const value = event.target.value ? parseInt(event.target.value, 10) : 0;
+  const handleChange = (row: number, col: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value ? parseFloat(e.target.value) : 0;
     dispatch(updateCell({ row, col, value }));
   };
 
@@ -21,7 +19,7 @@ const TablePage = () => {
 
 
   return (
-    <table className="table-auto w-full pl-1 ">
+    <table className="table-auto w-full px-1 ">
     <thead>
       <tr>
         <th className=" whitespace-nowrap py-2 w-auto border-2">Name</th>
@@ -33,17 +31,36 @@ const TablePage = () => {
     <tbody>
       {cells.map((defect, rowIndex) => (
         <tr key={rowIndex}>
-          <td className=" border-2 w-auto text-center whitespace-nowrap">
+          <td className=" border-2 w-auto px-1 whitespace-nowrap">
             {defectsName[rowIndex]}
           </td>
-          {Object.keys(defect).map((key, colIndex) => (
-            <td key={colIndex} className=" border-2 ">
+          {Object.keys(defect).map((cellValue, colIndex) => (
+            <td
+            key={colIndex}
+            className="border-2 text-center"
+            style={
+              colIndex === defect.length - 1
+                ? { whiteSpace: 'nowrap' }
+                : {}
+            }
+          >
               <input
-                className="w-full text-center rounded "
+                className=" text-center rounded px-1 "
                 type="number"
-                value={defect[colIndex]}
+                value={defect[colIndex] }
                 onChange={(e) =>
                   handleChange(rowIndex, colIndex, e)
+                }
+                style={
+                  colIndex === defect.length - 1
+                    ? {
+                        minWidth: '100%', 
+                        // width: '100%', 
+                        // width: `${Math.max(defect[colIndex].toString().length,2)}ch`, 
+                        // paddingLeft: '0.5rem', 
+                        // paddingRight: '0.5rem'
+                      }
+                    : { width: '100%' }
                 }
               />
             </td>
